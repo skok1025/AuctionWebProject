@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+mapper : MyBatis에서 사용하는 모든 SQL 을 작성하는 파일
+-->
+<mapper namespace="refund">
+<!-- 
+	<insert id="add" parameterType="com.test.spring.MyBatisDTO">
+		프로시져 호출 : ANSI SQL 영역
+		{
+			call proc_mybatis_add(#{name},#{age})
+		}
+	</insert>
+	
+	 <select id="joblist" resultType="String">
+	 	select distinct job_id from employees
+	 </select>
+-->
+	 <select id="category"  parameterType="String" resultType="com.auction.refund.RefundCategoryDTO">
+	 	select seq,category from tblRefundCategory 
+	 </select>
+	 
+	 <insert id="addok"  parameterType="com.auction.refund.RefundDTO" >
+	 	insert into tblRefund (seq,memberseq,auctionseq,refundseq,detail,regdate,status) 
+	 	values (refund_seq.nextval,#{memberseq},#{auctionseq},#{refundseq},#{detail},sysdate,0)
+	 </insert>
+	 
+	 <select id="refundlist" parameterType="String" resultType="com.auction.refund.VwRefundDTO">
+	 	select seq,sellerseq,goodname,detail,regdate,email,name from vwRefundHistory where sellerseq = #{sellerseq}
+	 </select>
+	 
+</mapper>

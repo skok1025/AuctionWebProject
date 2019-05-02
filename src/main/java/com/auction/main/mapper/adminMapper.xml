@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+mapper : MyBatis에서 사용하는 모든 SQL 을 작성하는 파일
+-->
+<mapper namespace="admin">
+<!-- 
+	<insert id="add" parameterType="com.test.spring.MyBatisDTO">
+		프로시져 호출 : ANSI SQL 영역
+		{
+			call proc_mybatis_add(#{name},#{age})
+		}
+	</insert>
+	
+	 <select id="joblist" resultType="String">
+	 	select distinct job_id from employees
+	 </select>
+-->
+	<select id="getBigCategory" resultType="String">
+		select distinct category from tblGoodsBigCategory
+	</select>
+	
+	<select id="getBidData" parameterType="String" resultType="com.auction.statistics.BidDTO">
+		select ag.seq as seq, buyer.seq as buyerSeq,buyer.name as buyerName, buyerDetail.address as buyerAddress, buyerDetail.tel as buyerTel,
+			seller.seq as sellerSeq, seller.name as sellerName, sellerDetail.address as sellerAddress , sellerDetail.tel as sellerTel, b.biddingPrice as price 
+				from tblAuctionGoods ag inner join tblBid b on ag.seq = b.auctionseq 
+	    			inner join tblMember buyer on buyer.seq = b.memberseq 
+	        			inner join tblMemberDetail buyerDetail on buyerDetail.seq = buyer.seq
+	            			inner join tblMember seller on seller.seq = ag.memberseq 
+	                			inner join tblMemberDetail sellerDetail on sellerDetail.seq = seller.seq where ag.seq=#{seq} and b.auctionstatusseq=2
+	</select>
+	
+	 
+</mapper>

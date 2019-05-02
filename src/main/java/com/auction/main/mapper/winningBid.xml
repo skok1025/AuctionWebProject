@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="winningBid">
+	<select id="list" resultType="com.auction.goods.WinningBidPayDTO" parameterType="String">
+select ag.goodname as goodname, ag.detail as detail, ts.status as status, b.biddingprice as biddingprice, 
+(select max(tblBid.biddingprice) from tblBid where tblBid.auctionseq = b.auctionseq) as finalbiddingprice,
+ai.image as image, ai.auctionseq as auctionseq
+    from tblBid b inner join tblAuctiongoods ag on b.auctionseq = ag.seq 
+        inner join tblauctionstatus ts on b.auctionstatusseq = ts.seq 
+            inner join tblauctionimage ai on ag.seq = ai.auctionseq where ai.ismain = 1 and b.memberseq = #{seq}
+	</select>
+</mapper>

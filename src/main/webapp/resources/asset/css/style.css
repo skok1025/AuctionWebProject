@@ -1,0 +1,24 @@
+@font-face { font-family: 'BMHANNAAir'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.0/BMHANNAAir.woff') format('woff'); font-weight: normal; font-style: normal; }
+html, body, p, h1,h2,h3,h4,h5,h6,span{
+	font-family: 'BMHANNAAir';
+}
+
+#pageTitle{
+	
+	font-size: 3em;
+	font-variant: small-caps;
+	margin-bottom: 20px;
+}
+
+.teamblack{ background-color: #393e46; color: white;}
+.teamgray{ background-color: #dfdfdf; color: white;}
+.teamred{ background-color: #cb3737; color: white;}
+.teamblue{ background-color: #5c7893; color: white;}
+
+
+#mycontents{
+	padding:30px;
+	width: 1200px;
+	min-height: 1000px;
+	border: 0px solid red;
+}

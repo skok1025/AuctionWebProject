@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+mapper : MyBatis에서 사용하는 모든 SQL 을 작성하는 파일
+-->
+<mapper namespace="goods">
+
+	<select id="bigCategory" resultType="bigcategorydto">
+		select * from tblgoodsbigcategory
+	</select>
+	
+	<select id="CategoryGoodsLog" parameterType="String" resultType="auctiongoodsdto">
+		select ag.*,ai.image as mainimg
+		from(
+		select log.* , rownum as rnum
+		from 
+		(select auctionseq from vwgoodslog where bigcategoryseq = #{seq} group by auctionseq order by count(*) desc) log
+		where rownum &lt;= 5) test inner join tblauctiongoods ag on test.auctionseq = ag.seq
+        inner join tblauctionimage ai on ag.seq = ai.auctionseq where ai.ismain = 1
+	</select>
+	
+	<select id="realGoodsList" resultType="auctiongoodsdto">
+		select goods.* ,rownum,ai.image as mainimg from(select * from tblAuctionGoods order by regtime desc) goods inner join tblAuctionimage ai on goods.seq = ai.auctionseq
+		where ai.ismain = 1
+	</select>
+	
+	<select id="interestList" parameterType="String" resultType="auctiongoodsdto">
+		select myinter.*,rownum from
+(select ag.*,ai.image as mainimg from tblAuctionGoods ag inner join tblinterest inter on ag.seq = inter.auctionseq inner join tblauctionimage ai on ag.seq = ai.auctionseq
+    where ai.ismain = 1 and inter.memberseq = #{seq} order by inter.seq desc) myinter where rownum &lt;= 4
+	</select>
+	
+	<select id="searchList" resultType="com.auction.main.SearchDTO">
+		select search.*,rownum
+		from
+		(select search,count(*) as cnt from tblsearch group by search order by cnt desc) search where rownum &lt;= 10
+	</select>
+	
+	<select id="searchGoods" parameterType="String" resultType="auctiongoodsdto">
+		select ag.* , ai.image as  mainimg from tblauctiongoods ag inner join tblauctionimage ai on ag.seq = ai.auctionseq where ai.ismain = 1 and ag.goodname like '%'|| #{search} ||'%'
+	</select>
+	
+	<insert id="searchWord" parameterType="map">
+		<if test="memberseq != null">
+			insert into tblSearch(seq,memberseq,search) values(search_seq.nextval,#{memberseq},#{search})
+		</if>
+		
+		<if test="memberseq == null">
+			insert into tblSearch(seq,memberseq,search) values(search_seq.nextval,null,#{search})
+		</if>
+	</insert>
+	
+	<select id="getCategoryGoods" parameterType="String" resultType="auctiongoodsdto">
+		select ag.*, ai.image as mainimg from tblauctiongoods ag inner join tblauctionimage ai on ag.seq = ai.auctionseq where ai.ismain = 1 and ag.smallcategoryseq = #{smallcategoryseq}
+	</select>
+	
+	<select id="getSmallCategory" parameterType="String" resultType="String">
+		select category from tblgoodssmallcategory where seq = #{smallCategorySeq} 
+	</select>
+	 
+</mapper>
+
+
+
+
+
+

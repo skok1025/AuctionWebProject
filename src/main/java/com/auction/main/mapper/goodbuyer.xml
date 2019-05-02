@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+mapper : MyBatis에서 사용하는 모든 SQL 을 작성하는 파일
+-->
+<mapper namespace="goodbuyer">
+<!-- 
+	<insert id="add" parameterType="com.test.spring.MyBatisDTO">
+		프로시져 호출 : ANSI SQL 영역
+		{
+			call proc_mybatis_add(#{name},#{age})
+		}
+	</insert>
+	
+	 <select id="joblist" resultType="String">
+	 	select distinct job_id from employees
+	 </select>
+-->
+
+	<select id="get" resultType="com.auction.goods.AuctionInfoDTO">
+		select * from vwauctioninfo where seq = #{seq}
+	</select>
+	
+	<select id="getmainimg" resultType="String">
+		select image from tblAuctionImage where auctionseq=#{seq} and ismain=1
+	</select>
+	
+	<select id="getsubimgs" resultType="String">
+		select image from tblAuctionImage where auctionseq=#{seq} and ismain=0
+	</select>
+	
+	<select id="getremain" resultType="Integer">
+		select floor((deadline-sysdate)*24*60*60) as remain from tblAuctionGoods where seq=#{seq}
+	</select>
+	
+	<select id="isheart" parameterType="map" resultType="Integer">
+		select count(*) as cnt from tblInterest where memberseq = #{memberseq} and auctionseq = #{auctionseq}	
+	</select>
+	
+	<insert id="addheart" parameterType="map">
+		insert into tblInterest values(interest_seq.nextval,#{auctionseq},#{memberseq})
+	</insert>
+	
+	<delete id="delheart" parameterType="map">
+		delete from tblInterest where auctionseq = #{auctionseq} and memberseq = #{memberseq}
+	</delete>
+	
+	<select id="getothergoodlist" parameterType="String" resultType="com.auction.goods.AuctionInfoDTO">
+		select * from vwauctioninfo where sellerseq = #{sellerseq}
+	</select>
+	
+	<select id="getsamegoodlist" parameterType="String" resultType="com.auction.goods.AuctionInfoDTO">
+		select * from vwauctioninfo where smallcategoryseq = #{smallcategoryseq}
+	</select>
+	
+	<select id="getmybidprice" parameterType="map" resultType="String">
+		select max(biddingprice) from tblbid where memberseq = #{memberseq} and auctionseq = #{auctionseq}
+	</select>
+	
+	<insert id="bidupdate" parameterType="map">
+		{
+			call procInsertBid(#{memberseq},#{auctionseq})
+		}
+	</insert>
+	
+	<select id="getmemberdto" parameterType="String" resultType="com.auction.account.MemberDTO">
+		select * from tblMember where seq = #{memberseq}
+	</select>
+	
+	<select id="getAuctionGoodsDTO" parameterType="String" resultType="com.auction.goods.AuctionGoodsDTO">
+		select * from tblAuctionGoods where seq = #{seq}
+	</select>
+	
+	<select id="getSellerTel" parameterType="String" resultType="String">
+		select tel from tblmemberdetail where memberseq = (select memberseq from tblAuctionGoods where seq = #{auctionseq})
+	</select>
+	  
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTO Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<!-- 타일즈의 템플릿 설정 + 조각 페이지 설정 -->
+<tiles-definitions>
+
+	<definition name="*.*.*" template="/WEB-INF/views/layout/layout.jsp">
+		<!-- <jsp:inclide> 대신할 프로퍼티를 설정 : 조각 페이지 정의 -->
+		<!-- 조각 페이지 -->
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+		<put-attribute name="header" value="/WEB-INF/views/inc/header.jsp"></put-attribute>
+		<put-attribute name="footer" value="/WEB-INF/views/inc/footer.jsp"></put-attribute>
+		<put-attribute name="bread" value="/WEB-INF/views/inc/bread.jsp"></put-attribute>
+		<put-attribute name="etc" value="/WEB-INF/views/inc/etc.jsp"></put-attribute>
+		<put-attribute name="goodssubmenu" value="/WEB-INF/views/inc/{1}submenu.jsp"></put-attribute>
+		
+		<!-- 주업무 페이지 -->
+		<put-attribute name="core" value="/WEB-INF/views/{2}/{3}.jsp"></put-attribute>
+		
+
+	</definition>
+
+
+
+	<definition name="login" template="/WEB-INF/views/layout/login.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+	</definition>
+	
+	
+</tiles-definitions>
+
+
+
+

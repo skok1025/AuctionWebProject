@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+mapper : MyBatis에서 사용하는 모든 SQL 을 작성하는 파일
+-->
+<mapper namespace="account">
+
+	<select id="login" parameterType="map" resultType="Integer">
+		select count(*) as cnt from vwAllAccount where email=#{id} and pw=#{password}
+	</select>
+	 
+	 <select id="getInfo" parameterType="String" resultType="com.auction.account.AllMemberDTO">
+	 	select * from vwAllAccount where email=#{id}
+	 </select>
+	 
+</mapper>

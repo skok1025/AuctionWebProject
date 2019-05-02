@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+mapper : MyBatis에서 사용하는 모든 SQL 을 작성하는 파일
+-->
+<mapper namespace="goodseller">
+<!-- 
+	<insert id="add" parameterType="com.test.spring.MyBatisDTO">
+		프로시져 호출 : ANSI SQL 영역
+		{
+			call proc_mybatis_add(#{name},#{age})
+		}
+	</insert>
+	
+	 <select id="joblist" resultType="String">
+	 	select distinct job_id from employees
+	 </select>
+-->
+
+	<select id="getbigcategorylist" resultType="com.auction.goods.GoodsBigCategoryDTO">
+		select seq,category from tblGoodsBigCategory
+	</select>
+	
+	<select id="getsmallcategory" resultType="com.auction.goods.GoodsSmallCategoryDTO" parameterType="String">
+		select seq,category from tblGoodsSmallCategory where bigcategoryseq = #{bseq}
+	</select>
+	 
+	  	
+	 <insert id="addsellerok" parameterType="com.auction.goods.AuctionGoodsDTO"  statementType="CALLABLE">
+		{
+			call procInsertAuctionGood(
+				#{memberseq},
+				#{smallcategoryseq,mode=IN,jdbcType=INTEGER,javaType=string},
+				#{title,mode=IN,jdbcType=VARCHAR,javaType=string},
+				#{goodname,mode=IN,jdbcType=VARCHAR,javaType=string},
+				#{detail,mode=IN,jdbcType=VARCHAR,javaType=string},
+				#{brand,mode=IN,jdbcType=VARCHAR,javaType=string},
+				#{startprice,mode=IN,jdbcType=INTEGER,javaType=string},
+				to_date(#{deadline}, 'yyyy/mm/dd hh24:mi:ss'),
+				#{instantprice,mode=IN,jdbcType=INTEGER,javaType=string},
+				#{estimatedprice,mode=IN,jdbcType=INTEGER,javaType=string},
+				#{askingprice,mode=IN,jdbcType=INTEGER,javaType=string},
+				#{mainimg,mode=IN,jdbcType=VARCHAR,javaType=string},
+				#{subimg1,mode=IN,jdbcType=VARCHAR,javaType=string},
+				#{subimg2,mode=IN,jdbcType=VARCHAR,javaType=string},
+				#{subimg3,mode=IN,jdbcType=VARCHAR,javaType=string}
+			)
+		}
+	</insert>
+	
+	<!-- 
+	<insert id="addsellerok1" parameterType="com.auction.goods.AuctionGoodsDTO">
+		insert into tblAuctionGoods values(auctiongoods_seq.nextval,#{memberseq},#{smallcategoryseq},#{title},#{goodname},#{detail},#{brand},#{startprice},sysdate,to_date(#{deadline}, 'yyyy/mm/dd hh24:mi:ss'),#{instantprice},#{estimatedprice},#{askingprice},null,#{startprice})
+	</insert>
+	-->
+	<select id="getSmallList" parameterType="String" resultType="com.auction.goods.GoodsSmallCategoryDTO">
+		select * from tblGoodsSmallCategory where bigcategoryseq = #{bigcategoryseq}
+	</select>
+	
+	<select id="getMaxSeq" resultType="String">
+		select max(seq) from tblauctiongoods
+	</select>
+	  
+</mapper>
